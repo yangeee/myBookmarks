@@ -1,7 +1,7 @@
 *{margin:0;padding: 0;}
 a{text-decoration: none;}
 body{
-    background: red url(./wall.jpg) no-repeat center center;
+    background: #94CFD2 url(./wall.jpg) no-repeat center center;
     background-size: cover;
 }
 #mainXX > div:nth-child(2){
