@@ -61,7 +61,7 @@
                 var x = prompt('给我一个新网址');
                 hash[key] = x;
                 img2.src = 'http://' + x + '/favicon.ico';
-                img.onerror = function (e) {
+                img2.onerror = function (e) {
                     e.target.src = '//i.loli.net/2018/10/14/5bc2acd63cbbf.png';
                 }
                 localStorage.setItem('zzz', JSON.stringify(hash));
