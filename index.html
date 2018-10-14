@@ -10,12 +10,13 @@
 <body>
     <header></header>
     <main>
-        <div id="mainXX" class="wrapper">
+        <div id="main" class="wrapper">
 
         </div>
     </main>
     <footer></footer>
     <script>
+        // 1.初始化数据
         var keys = {
             0:['q','w','e','r','t','y','u','i','o','p'],
             1:['a','s','d','f','g','h','j','k','l'],
@@ -24,48 +25,64 @@
         }
 
         var hash = {
-            q:'qq.com' ,
+            q:'qq.com',
             w:'weibo.com',
             e:'ele.me',
-            r:'renren.com',
-            t:'tianya.com',
             y:'yahoo.cn',
-            u:'uc.com',
             i:'iqiyi.com',
-            o:'opera.com',
-            p:undefined,
-            a:'acfun.tv',
-            s:'sohu.com',
             z:'zhihu.com',
-            m:'https://www.mcdonalds.com.cn/'
+            m:'www.mcdonalds.com.cn/'
         }
         //取出本地localStorage中的hash 
         var hashInLocalStorage = JSON.parse(localStorage.getItem('zzz') || 'null');
         if(hashInLocalStorage){
             hash = hashInLocalStorage;
         }
+        // 2.生成键盘
         //遍历生成div和kbd标签
         index = 0;
         while(index<keys['length']){
-            divXX = document.createElement('div');
-            mainXX.appendChild(divXX);
-            row = keys[index];
-            index2 = 0;
+            var div = document.createElement('div');
+            div.className = 'row';
+            main.appendChild(div);
+            var row = keys[index];
+            var index2 = 0;
             while(index2<row.length){
-                kbdXX = document.createElement('kbd');
-                kbdXX.textContent = row[index2];
-                buttonX = document.createElement('button');
-                buttonX.textContent = '编辑';
-                buttonX.id = row[index2];
+                var kbd = document.createElement('kbd');
+                var span = document.createElement('span');
+                span.textContent = row[index2];
+                span.className = 'text';
+                kbd.appendChild(span);
+                kbd.className = 'key';
+                var button = document.createElement('button');
+                button.textContent = '编辑';
+                button.id = row[index2];
+                var img = document.createElement('img');
+                if(hash[row[index2]]){
+                    img.src = 'http://'+hash[row[index2]] + '/favicon.ico';    
+                }else{
+                    img.src = '//i.loli.net/2018/10/14/5bc2acd63cbbf.png';
+                }
+                img.onerror = function(e){
+                    e.target.src = '//i.loli.net/2018/10/14/5bc2acd63cbbf.png';
+                }
+                
                 // 编辑新网站
-                buttonX.onclick = function(xzkjcnxlkcjlk){
-                    key = xzkjcnxlkcjlk['target']['id'];
-                    x = prompt('给我一个新网址');
+                button.onclick = function(xzkjcnxlkcjlk){
+                    var button2 = xzkjcnxlkcjlk.target;
+                    var img2 = button2.nextSibling;
+                    var key = xzkjcnxlkcjlk['target']['id'];
+                    var x = prompt('给我一个新网址');
                     hash[key] = x;
                     localStorage.setItem('zzz', JSON.stringify(hash));
+                    img2.src = 'http://'+ x +'/favicon.ico';
+                    img.onerror = function(e){
+                    e.target.src = '//i.loli.net/2018/10/14/5bc2acd63cbbf.png';
                 }
-                kbdXX.appendChild(buttonX);
-                divXX.appendChild(kbdXX);
+                }
+                kbd.appendChild(button);
+                div.appendChild(kbd);
+                kbd.appendChild(img);
                 index2++;
             }
             index++;
@@ -75,7 +92,7 @@
            key = xzkjcnxlkcjlk['key'];//必须加引号
            website = hash[key];//这里的key就是一个变量
            window.open('http://'+website,'_blank');
-           
+        
         }
     </script>
 </body>
