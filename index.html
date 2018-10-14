@@ -34,30 +34,37 @@
             m:'www.mcdonalds.com.cn/'
         }
         //取出本地localStorage中的hash 
-        var hashInLocalStorage = JSON.parse(localStorage.getItem('zzz') || 'null');
+        var hashInLocalStorage = getFromLocalStorage('zzz');
         if(hashInLocalStorage){
             hash = hashInLocalStorage;
+        }
+
+        function getFromLocalStorage(name){
+            return JSON.parse(localStorage.getItem(name) || 'null');
+        }
+        function(tagName){
+            return document.createElement(tagName);
         }
         // 2.生成键盘
         //遍历生成div和kbd标签
         index = 0;
         while(index<keys['length']){
-            var div = document.createElement('div');
+            var div = tag('div');
             div.className = 'row';
             main.appendChild(div);
             var row = keys[index];
             var index2 = 0;
             while(index2<row.length){
-                var kbd = document.createElement('kbd');
-                var span = document.createElement('span');
+                var kbd = tag('kbd');
+                var span = tag('span');
                 span.textContent = row[index2];
                 span.className = 'text';
                 kbd.appendChild(span);
                 kbd.className = 'key';
-                var button = document.createElement('button');
+                var button = tag('button');
                 button.textContent = '编辑';
                 button.id = row[index2];
-                var img = document.createElement('img');
+                var img = tag('img');
                 if(hash[row[index2]]){
                     img.src = 'http://'+hash[row[index2]] + '/favicon.ico';    
                 }else{
@@ -87,7 +94,7 @@
             }
             index++;
         }
-        //按键跳转页面
+        // 3.按键跳转页面
         document.onkeypress = function(xzkjcnxlkcjlk){
            key = xzkjcnxlkcjlk['key'];//必须加引号
            website = hash[key];//这里的key就是一个变量
