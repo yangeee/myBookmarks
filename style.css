@@ -1,66 +1,27 @@
-*{margin:0;padding: 0;}
-a{text-decoration: none;}
 body{
-    background: #94CFD2 url(./wall.jpg) no-repeat center center;
-    background-size: cover;
+    margin: 0;
 }
-#mainXX > div:nth-child(2){
-    margin-left: -24px;
+#xxx{
+    background: green;
+    display: block;
 }
-#mainXX > div:nth-child(3){
-    margin-left: -80px;
-}
-kbd{border:1px solid red;
-    display: inline-block;text-transform: uppercase;position: relative;}
-kbd > button {
-    position: absolute;
-    right: 0;
+.actions{
+    position: fixed;
     bottom: 0;
+    left: 0;
+
+}
+.actions > #brush{
     display: none;
-    font-size: 10px;
 }
-kbd:hover > button{
+.actions.x > #brush{
     display: inline-block;
-    padding: 0;
 }
-main{
-    text-align: center;
+.actions.x > #eraser{
+    display: none;
+}
+#canvas{
+    background: red;
     height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-}
-.wrapper{
-    display: inline-block;
-}
-.key{
-    width: 60px;
-    height: 50px;
-    background: linear-gradient(to bottom, #292929 0%,#111111 100%);
-    border: 1px solid #373737;
-    color: #c5c5c5;
-    border-radius: 6px;
-    box-shadow: 0 0 0 1px #1a1b1c, 0 0 0 2px #1f2020, 0 3px 0 2px #000000;
-    font-size: 16px;
-    font-family: Helvetica;
     position: relative;
-}
-.key img{
-    height: 16px;
-    width: 16px;
-    position: absolute;
-    bottom: 0;
-    left: 4px;
-}
-.key .text{
-    position: absolute;
-    top:0;
-    left: 4px;
-}
-.row {
-    margin: 20px 0;
-}
-.row .key{
-    margin: 0 10px;
 }

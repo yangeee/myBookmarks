@@ -6,140 +6,104 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="style.css">
-    <title>迅捷导航</title>
+    <title>画板</title>
 </head>
 
 <body>
-    <header></header>
-    <main>
-        <div id="main" class="wrapper">
-
-        </div>
-    </main>
-    <footer></footer>
+    <canvas id="xxx" width="300" height="300"></canvas>
+    <div id="actions" class="actions">
+        <button id="eraser">橡皮擦</button>
+        <button id="brush">画笔</button>
+    </div>
     <script>
-        // 1.初始化数据
-        var hashA = init();
-        var keys = hashA['keys'];
-        var hash = hashA['hash'];
+        var yyy = document.getElementById('xxx');
+        var context = yyy.getContext('2d');
 
+        autoSetCanvasSize(yyy);
 
-        // 2.生成键盘
-        //遍历生成div和kbd标签
-        generateKeyboard(keys,hash);
+        listenToMouse(yyy);
 
-        // 3.按键跳转页面
-        listenToUser(hash);
+        var eraserEnabled = false;
+        //鼠标点击切换画笔和橡皮擦
+        eraser.onclick = function(){
+            eraserEnabled = true;
+            actions.className = 'actions x';
 
-
-        //4.封装函数，优化代码
-        function getFromLocalStorage(name) {
-            return JSON.parse(localStorage.getItem(name) || 'null');
         }
-        function tag(tagName, attributes) {
-            var element = document.createElement(tagName);
-            for (var key in attributes) {
-                element[key] = attributes[key];
+        brush.onclick = function(){
+            eraserEnabled = false;
+            actions.className = 'actions';
+        }
+        //自动设置画布尺寸
+        function autoSetCanvasSize(canvas){
+            setCanvasSize();
+
+            window.onresize = function(){
+                setCanvasSize();
             }
-            return element;
+
+            function setCanvasSize(){
+                var pageWidth = document.documentElement.clientWidth;
+                var pageHeight = document.documentElement.clientHeight;
+
+                canvas.width = pageWidth;
+                canvas.height = pageHeight;
+            }
         }
-        function createSpan(textContent) {
-            var span = tag('span');
-            span.textContent = textContent;
-            span.className = 'text';
-            return span;
+        //画圈
+        
+        //画线
+        function drawLine(x1,y1,x2,y2){
+            context.beginPath();
+            context.strokeStyle = 'black';
+            context.moveTo(x1,y1);//起点
+            context.lineWidth = 5;
+            context.lineTo(x2,y2);//终点
+            context.stroke();
+            context.closePath();
         }
-        function createButton(id) {
-            var button = tag('button');
-            button.textContent = '编辑';
-            button.id = id;
-            // 编辑新网站
-            button.onclick = function (xzkjcnxlkcjlk) {
-                var button2 = xzkjcnxlkcjlk.target;
-                var img2 = button2.nextSibling;
-                var key = xzkjcnxlkcjlk['target']['id'];
-                var x = prompt('给我一个新网址');
-                hash[key] = x;
-                img2.src = 'http://' + x + '/favicon.ico';
-                img2.onerror = function (e) {
-                    e.target.src = '//i.loli.net/2018/10/14/5bc2acd63cbbf.png';
+
+        function listenToMouse(canvas){
+            var using = false;
+            var lastPoint = {
+                x:undefined,
+                y:undefined
+            }
+            canvas.onmousedown = function(aaa){
+                var x = aaa.clientX;
+                var y = aaa.clientY;
+                if(eraserEnabled){
+                    using = true;
+                    context.clearRect(x-20,y-20,40,40);
+                }else{
+                    using = true;
+
+                    lastPoint = {
+                        x:x,
+                        y:y
+                    }
                 }
-                localStorage.setItem('zzz', JSON.stringify(hash));
             }
-            return button;
-        }
-        function createImg(domain) {
-            var img = tag('img');
-            if (domain) {
-                img.src = 'http://' + domain + '/favicon.ico';
-            } else {
-                img.src = '//i.loli.net/2018/10/14/5bc2acd63cbbf.png';
-            }
-            img.onerror = function (e) {
-                e.target.src = '//i.loli.net/2018/10/14/5bc2acd63cbbf.png';
-            }
-            return img;
-        }
-        function init() {
-            var keys = {
-                0: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
-                1: ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'],
-                2: ['z', 'x', 'c', 'v', 'b', 'n', 'm'],
-                length: 3
-            }
+            canvas.onmousemove = function(aaa){
+                var x =aaa.clientX;
+                var y =aaa.clientY;
 
-            var hash = {
-                q: 'qq.com',
-                w: 'weibo.com',
-                e: 'ele.me',
-                y: 'yahoo.cn',
-                i: 'iqiyi.com',
-                z: 'zhihu.com',
-                m: 'www.mcdonalds.com.cn/'
-            }
+                if(!using){return;}
 
-            //取出本地localStorage中的hash 
-            var hashInLocalStorage = getFromLocalStorage('zzz');
-            if (hashInLocalStorage) {
-                hash = hashInLocalStorage;
-            }
-
-            return {
-                keys: keys,
-                hash: hash
-            }
-        }
-        function generateKeyboard(keys,hash) {
-            for (index = 0; index < keys['length']; index++) {
-                var div = tag('div', { className: 'row' });
-
-                main.appendChild(div);
-
-                var row = keys[index];// 第一个数组，第二个数组，第三个数组
-                for (var index2 = 0; index2 < row.length; index2++) {
-                    var span = createSpan(row[index2]);
-
-                    var button = createButton(row[index2]);
-
-                    var img = createImg(hash[row[index2]]);
-
-                    var kbd = tag('kbd');
-                    kbd.className = 'key';
-                    kbd.appendChild(span);
-                    kbd.appendChild(button);
-                    kbd.appendChild(img);
-
-                    div.appendChild(kbd);
+                if(eraserEnabled){
+                    context.clearRect(x-20,y-20,40,40);
+                }else{
+                    var newPoint = {
+                        x:x,
+                        y:y
+                    }
+                    drawLine(lastPoint.x,lastPoint.y,newPoint.x,newPoint.y);
+                    lastPoint = newPoint;
                 }
             }
 
-        }
-        function listenToUser(hash) {
-            document.onkeypress = function (xzkjcnxlkcjlk) {
-                var key = xzkjcnxlkcjlk['key'];//必须加引号
-                var website = hash[key];//这里的key就是一个变量
-                window.open('http://' + website, '_blank');
-
+            canvas.onmouseup = function(aaa){
+                using = false;
             }
         }
     </script>
