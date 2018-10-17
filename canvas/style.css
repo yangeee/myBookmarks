@@ -16,6 +16,9 @@ ul,ol{
 #xxx{
     background: white;
     display: block;
+    position: fixed;/* 防止画面跳动 */
+    top: 0;
+    left: 0;
 }
 .actions{
     position: fixed;
